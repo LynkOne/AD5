@@ -137,7 +137,7 @@ namespace ad5.Models
             double ProbabilidadOver;
             double ProbabilidadUnder;
             double dineroUnder = mercados.dinero_under;
-            if (dineroUnder == 0)
+            if (dineroUnder <= 0)
             {
                 dineroUnder = 1;
             }
@@ -146,16 +146,45 @@ namespace ad5.Models
             ProbabilidadOver = dineroOver / (dineroOver + dineroUnder);
             ProbabilidadUnder = dineroUnder / (dineroOver + dineroUnder);
             cuotaOver = (1 / ProbabilidadOver) * 0.95;
+            cuotaOver = Math.Round(cuotaOver, 2);
             cuotaUnder = (1 / ProbabilidadUnder) * 0.95;
+            cuotaUnder = Math.Round(cuotaUnder, 2);
             MySqlConnection con = Connect();
             MySqlCommand command = con.CreateCommand();
-            command.CommandText = "UPDATE mercados SET cuota_over =" + cuotaOver + ",cuota_under = " + cuotaUnder + ",dinero_over = " + dineroOver + " WHERE id = " + mercados.id_mercado + ";";
+            int dineroOver_actual=0;
+            command.CommandText = "SELECT * FROM mercados WHERE id = " + mercados.id_mercado;
             Debug.WriteLine(command.CommandText);
             try
             {
                 con.Open();
-                command.ExecuteNonQuery();
-                con.Close();
+                MySqlDataReader res1 = command.ExecuteReader();
+                if (res1.Read())
+                {
+                    Debug.WriteLine(res1.GetDouble(4));
+                    dineroOver_actual = (int)res1.GetDouble(4);
+                    con.Close();
+                }
+                    
+                
+
+            }
+            catch (MySqlException e)
+            {
+                Debug.WriteLine("Se ha producido un error de MySql: " + e.Message);
+            }
+
+            Debug.WriteLine(dineroOver);
+            Debug.WriteLine(dineroOver_actual);
+            dineroOver = dineroOver + dineroOver_actual;
+            MySqlConnection con1 = Connect();
+            MySqlCommand command1 = con1.CreateCommand();
+            command1.CommandText = "UPDATE mercados SET cuota_over =" + cuotaOver + ",cuota_under = " + cuotaUnder + ",dinero_over = " + dineroOver + " WHERE id = " + mercados.id_mercado + ";";
+            Debug.WriteLine(command1.CommandText);
+            try
+            {
+                con1.Open();
+                command1.ExecuteNonQuery();
+                con1.Close();
 
             }
             catch (MySqlException e)
@@ -176,7 +205,7 @@ namespace ad5.Models
             double ProbabilidadOver;
             double ProbabilidadUnder;
             double dineroOver = mercados.dinero_over;
-            if (dineroOver == 0)
+            if (dineroOver <= 0)
             {
                 dineroOver = 1;
             }
@@ -184,17 +213,47 @@ namespace ad5.Models
             double cuotaUnder = mercados.cuota_under;
             ProbabilidadOver = dineroOver / (dineroOver + dineroUnder);
             ProbabilidadUnder = dineroUnder / (dineroOver + dineroUnder);
-            cuotaUnder = (1 / ProbabilidadUnder) * 0.95;
             cuotaOver = (1 / ProbabilidadOver) * 0.95;
+            cuotaOver = Math.Round(cuotaOver, 2);
+            cuotaUnder = (1 / ProbabilidadUnder) * 0.95;
+            cuotaUnder = Math.Round(cuotaUnder, 2);
             MySqlConnection con = Connect();
             MySqlCommand command = con.CreateCommand();
-            command.CommandText = "UPDATE mercados SET cuota_over =" + cuotaOver + ",cuota_under = " + cuotaUnder + ",dinero_under = " + dineroUnder + " WHERE id = " + mercados.id_mercado + ";";
-            Debug.WriteLine(command.CommandText);
+            int dineroUnder_actual = 0;
+            command.CommandText = "SELECT * FROM mercados WHERE id = " + mercados.id_mercado;
+            Debug.WriteLine("Sentencia sql: " + command.CommandText);
             try
             {
                 con.Open();
-                command.ExecuteNonQuery();
-                con.Close();
+                MySqlDataReader res1 = command.ExecuteReader();
+                if (res1.Read())
+                {
+                    Debug.WriteLine("Resultado select dinero under: "+res1.GetDouble(5));
+                    dineroUnder_actual = (int)res1.GetDouble(5);
+                    con.Close();
+                }
+
+
+
+            }
+            catch (MySqlException e)
+            {
+                Debug.WriteLine("Se ha producido un error de MySql: " + e.Message);
+            }
+
+            Debug.WriteLine("Dinero under: "+dineroUnder);
+            Debug.WriteLine("Dinero under actual: "+dineroUnder_actual);
+            dineroUnder = dineroUnder + dineroUnder_actual;
+            Debug.WriteLine("Dinero under tras sumar: " + dineroUnder);
+            MySqlConnection con1 = Connect();
+            MySqlCommand command1 = con1.CreateCommand();
+            command1.CommandText = "UPDATE mercados SET cuota_over =" + cuotaOver + ",cuota_under = " + cuotaUnder + ",dinero_under = " + dineroUnder + " WHERE id = " + mercados.id_mercado + ";";
+            Debug.WriteLine(command1.CommandText);
+            try
+            {
+                con1.Open();
+                command1.ExecuteNonQuery();
+                con1.Close();
 
             }
             catch (MySqlException e)

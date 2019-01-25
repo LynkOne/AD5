@@ -99,7 +99,7 @@ namespace ad5.Models
             {
                 Debug.WriteLine("Se ha producido un error de conexión "+e.Message);
             }
-            command.CommandText = "INSERT INTO mercados(overunder, cuota_over, cuota_under, dinero_over, dinero_under, id_partido) VALUES (1.5, "+ rand1 + ", " + rand2 + ", 0, 0, (SELECT id FROM partidos WHERE equipo_local='" + partido.equipo_local+ "' AND equipo_visitante='" + partido.equipo_visitante +"')); ";
+            command.CommandText = "INSERT INTO mercados(overunder, cuota_over, cuota_under, dinero_over, dinero_under, id_partido) VALUES (1.5, "+ rand1 + ", " + rand2 + ", 100, 100, (SELECT id FROM partidos WHERE equipo_local='" + partido.equipo_local+ "' AND equipo_visitante='" + partido.equipo_visitante +"')); ";
             try
             {
                 con.Open();
@@ -111,7 +111,7 @@ namespace ad5.Models
             {
                 Debug.WriteLine("Se ha producido un error de conexión " + e.Message);
             }
-            command.CommandText = "INSERT INTO mercados(overunder, cuota_over, cuota_under, dinero_over, dinero_under, id_partido) VALUES (2.5, " + rand3 + ", " + rand4 + ", 0, 0, (SELECT id FROM partidos WHERE equipo_local='" + partido.equipo_local + "' AND equipo_visitante='" + partido.equipo_visitante + "')); ";
+            command.CommandText = "INSERT INTO mercados(overunder, cuota_over, cuota_under, dinero_over, dinero_under, id_partido) VALUES (2.5, " + rand3 + ", " + rand4 + ", 100, 100, (SELECT id FROM partidos WHERE equipo_local='" + partido.equipo_local + "' AND equipo_visitante='" + partido.equipo_visitante + "')); ";
             try
             {
                 con.Open();
@@ -123,7 +123,7 @@ namespace ad5.Models
             {
                 Debug.WriteLine("Se ha producido un error de conexión " + e.Message);
             }
-            command.CommandText = "INSERT INTO mercados(overunder, cuota_over, cuota_under, dinero_over, dinero_under, id_partido) VALUES (3.5, " + rand5 + ", " + rand6 + ", 0, 0, (SELECT id FROM partidos WHERE equipo_local='" + partido.equipo_local + "' AND equipo_visitante='" + partido.equipo_visitante + "')); ";
+            command.CommandText = "INSERT INTO mercados(overunder, cuota_over, cuota_under, dinero_over, dinero_under, id_partido) VALUES (3.5, " + rand5 + ", " + rand6 + ", 100, 100, (SELECT id FROM partidos WHERE equipo_local='" + partido.equipo_local + "' AND equipo_visitante='" + partido.equipo_visitante + "')); ";
             try
             {
                 con.Open();
